@@ -68,7 +68,7 @@ class Masker
       print "Masking #{model['name']} (#{index + 1}/#{total})\r" unless @config['silent']
       mask = create_mask model['fields']
 
-      document.update(mask)
+      db[model['name']].find({_id: document['_id']}).update_one(mask)
     end
   end
 
