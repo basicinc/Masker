@@ -2,9 +2,12 @@ require 'yaml'
 require 'ffaker'
 require 'mongo'
 
+Mongo::Logger.logger.level = Logger::FATAL
+
 class Masker
   def initialize(config = nil)
     configure config unless config.nil?
+    @sequence = 0
   end
 
   def db
@@ -25,6 +28,10 @@ class Masker
 
   def configure(config)
     @config = config.is_a?(String) ? load_from_yaml(config) : config
+  end
+
+  def seq
+    @sequence += 1
   end
 
   private
@@ -68,17 +75,18 @@ class Masker
       print "Masking #{model['name']} (#{index + 1}/#{total})\r" unless @config['silent']
       mask = create_mask model['fields']
 
-      db[model['name']].find({_id: document['_id']}).update_one(mask)
+      apply_mask(document, mask)
+      db[model['name']].find({_id: document['_id']}).update_one(document)
     end
   end
 
   def prepair_scope(model)
     scope = db[model['name']]
-    scope.find(model['condition'] || {})
+    scope.find(parse_condition(model['condition']))
   end
 
   def parse_condition condition
-    return nil if condition.nil?
+    return {} if condition.nil?
 
     condition.each do |op, value|
       if value.is_a?(String) && value.match?(/^BSON::ObjectId('[A-Za-z0-9]+')$/)
@@ -105,9 +113,10 @@ class Masker
   end
 
   def apply_mask(document, mask)
-    mask.reject do |field, _value|
+    mask = mask.reject do |field, _value|
       document[field].nil?
     end
+    document.update(mask)
   end
 
   def evalute_field_value(value)
