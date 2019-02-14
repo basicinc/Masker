@@ -1,0 +1,19 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo:3.4.2
+    volumes:
+      - mongo-data:/data/db
+      - ./data:/tmp/data
+
+  app:
+    build: ./
+    links:
+      - mongodb
+    volumes:
+      - ./lib:/masking/lib
+    stdin_open: true
+    tty: true
+
+volumes:
+  mongo-data:
