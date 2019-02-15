@@ -1,4 +1,4 @@
-require './lib/masker'
+require "#{__dir__}/lib/masker"
 require 'thor'
 
 class Masker::Cli < Thor
