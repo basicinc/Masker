@@ -4,7 +4,7 @@ Masking your data in mongodb
 # Usage
 ```
 bundle
-ruby masker mask mask.yml
+ruby masker.rb mask mask.yml
 ```
 
 # Example mask.yml
@@ -33,4 +33,9 @@ models:
       _type: "'ExternalService'"
       facebook: nil
       google: nil
+  - name: contacts
+    condition:
+      site_id:
+        "$ne": BSON::ObjectId('12312345346456456456sdff')
+    delete: true
 ```

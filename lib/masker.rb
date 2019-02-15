@@ -89,7 +89,7 @@ class Masker
     return {} if condition.nil?
 
     condition.each do |op, value|
-      if value.is_a?(String) && value.match?(/^BSON::ObjectId('[A-Za-z0-9]+')$/)
+      if value.is_a?(String) && value.match?(/^BSON::ObjectId\('[A-Za-z0-9]+'\)$/)
         condition[op] = eval(value)
       elsif value.is_a?(Hash)
         condition[op] = parse_condition value
