@@ -86,15 +86,23 @@ class Masker
   end
 
   def parse_condition condition
-    return {} if condition.nil?
+    if condition.is_a?(String) && condition.match?(/^BSON::ObjectId\('[A-Za-z0-9]+'\)$/)
+      return eval(condition)
+    end
 
-    condition.each do |op, value|
-      if value.is_a?(String) && value.match?(/^BSON::ObjectId\('[A-Za-z0-9]+'\)$/)
-        condition[op] = eval(value)
-      elsif value.is_a?(Hash)
+    if condition.is_a?(Hash)
+      condition.each do |op, value|
         condition[op] = parse_condition value
       end
+      return condition
     end
+
+    if condition.is_a?(Array)
+      return condition.map do |value|
+        parse_condition value
+      end
+    end
+
     condition
   end
 
