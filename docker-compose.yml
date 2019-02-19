@@ -12,6 +12,7 @@ services:
       - mongodb
     volumes:
       - ./lib:/masking/lib
+      - ./bin:/masking/bin
     stdin_open: true
     tty: true
 

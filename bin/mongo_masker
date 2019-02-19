@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+require 'mongo_masker'
+require 'thor'
+
+class MongoMasker::Cli < Thor
+  include Thor::Actions
+
+  desc 'mask MASKER_FILE', 'Mask database'
+  def mask(masker_file)
+    masker = MongoMasker::Main.new(masker_file)
+    masker.mask
+  end
+end
+
+MongoMasker::Cli.start
