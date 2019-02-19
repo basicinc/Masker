@@ -3,8 +3,8 @@ Masking your data in mongodb
 
 # Usage
 ```
-bundle
-ruby masker.rb mask mask.yml
+gem install mongo_masker
+mongo_masker mask mask.yml
 ```
 
 # Example mask.yml
@@ -17,7 +17,7 @@ models:
       email:
         "$not": !ruby/regexp '/@basicinc\.jp$/'
     fields:
-      email: FFaker::Internet.safe_email
+      email: FFaker::Internet.unique.safe_email
   - name: users
     fields:
       reset_password_token: String.new
