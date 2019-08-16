@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'mongo_masker'
-  s.version     = '1.0.0'
+  s.version     = '1.0.1'
   s.date        = '2019-02-19'
   s.summary     = 'Mongo masker'
   s.description = 'Masking production data mongodb for testing/development'
