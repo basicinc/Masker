@@ -87,7 +87,7 @@ module MongoMasker
     end
 
     def parse_condition condition
-      if condition.is_a?(String) && condition.match?(/^BSON::ObjectId\('[A-Za-z0-9]+'\)$/)
+      if condition.is_a?(String) && condition.match(/^BSON::ObjectId\('[A-Za-z0-9]+'\)$/)
         return eval(condition)
       end
 
