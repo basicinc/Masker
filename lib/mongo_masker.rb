@@ -45,7 +45,7 @@ module MongoMasker
     end
 
     def format_time_diff(start_at, finish_at)
-      output = Time.at(finish_at - start_at).strftime '%H hours %M minutes %S seconds'
+      output = Time.at(finish_at - start_at).utc.strftime '%H hours %M minutes %S seconds'
       output.gsub(/^0+ hours /, '').gsub(/^0+ minutes /, '')
     end
 
