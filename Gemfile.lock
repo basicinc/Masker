@@ -1,12 +1,16 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    bson (4.4.2)
-    ffaker (2.10.0)
-    irb (1.0.0)
-    mongo (2.7.0)
-      bson (>= 4.4.2, < 5.0.0)
-    thor (0.20.3)
+    bson (4.7.0)
+    ffaker (2.13.0)
+    io-console (0.5.5)
+    irb (1.2.1)
+      reline (>= 0.0.1)
+    mongo (2.11.2)
+      bson (>= 4.6.0, < 5.0.0)
+    reline (0.1.2)
+      io-console (~> 0.5)
+    thor (1.0.1)
 
 PLATFORMS
   ruby
@@ -18,4 +22,4 @@ DEPENDENCIES
   thor
 
 BUNDLED WITH
-   1.17.1
+   1.17.2
