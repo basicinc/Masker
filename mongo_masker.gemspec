@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'mongo_masker'
-  s.version     = '1.0.2'
-  s.date        = '2020-01-23'
+  s.version     = '1.0.3'
+  s.date        = '2021-10-28'
   s.summary     = 'Mongo masker'
   s.description = 'Masking production data mongodb for testing/development'
   s.authors     = ['Clicia Scarlet']

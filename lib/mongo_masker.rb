@@ -74,7 +74,7 @@ module MongoMasker
 
       scope.each_with_index do |document, index|
         print "Masking #{model['name']} (#{index + 1}/#{total})\r" unless @config['silent']
-        mask = create_mask model['fields']
+        mask = create_mask model['fields'], document
 
         apply_mask(document, mask)
         db[model['name']].find({_id: document['_id']}).update_one(document)
@@ -107,31 +107,31 @@ module MongoMasker
       condition
     end
 
-    def create_mask(fields)
+    def create_mask(fields, document)
       mask = {}
-      fields.each do |field, value|
-        if value.is_a?(Symbol)
-          sub_mask = create_mask @config['models'].find{|model| model['name'] == value.to_s}['fields']
+      fields.each do |field, expr|
+        if expr.is_a?(Symbol)
+          sub_mask = create_mask @config['models'].find{|model| model['name'] == expr.to_s}['fields'], document
           mask[field] = sub_mask
           next
         end
 
-        mask[field] = evalute_field_value(value)
+        mask[field] = evalute_field_expr(expr, document[field])
       end
       mask
     end
 
     def apply_mask(document, mask)
-      mask = mask.reject do |field, _value|
+      mask = mask.reject do |field, _expr|
         document[field].nil?
       end
       document.update(mask)
     end
 
-    def evalute_field_value(value)
-      eval(value)
+    def evalute_field_expr(expr, value)
+      eval(expr)
     rescue StandardError
-      raise "Can't eval `#{value}`"
+      raise "Can't eval `#{expr}`"
     end
 
     def load_from_yaml(config_path)
